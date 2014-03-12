@@ -1,12 +1,12 @@
-Semantic Versioning 2.0.0
-==============================
+Semantic Versioning 2.1.0
+=========================
 
 Summary
 -------
 
 Given a version number MAJOR.MINOR.PATCH, increment the:
 
-1. MAJOR version when you make incompatible API changes,
+1. MAJOR version when you make incompatible changes to an interface,
 1. MINOR version when you add functionality in a backwards-compatible
    manner, and
 1. PATCH version when you make backwards-compatible bug fixes.
@@ -14,15 +14,16 @@ Given a version number MAJOR.MINOR.PATCH, increment the:
 Additional labels for pre-release and build metadata are available as extensions
 to the MAJOR.MINOR.PATCH format.
 
+
 Introduction
 ------------
 
 In the world of software management there exists a dread place called
-"dependency hell." The bigger your system grows and the more packages you
+"dependency hell." The bigger your system grows and the more interfaces you
 integrate into your software, the more likely you are to find yourself, one
 day, in this pit of despair.
 
-In systems with many dependencies, releasing new package versions can quickly
+For example in systems with many dependencies, releasing new package versions can quickly
 become a nightmare. If the dependency specifications are too tight, you are in
 danger of version lock (the inability to upgrade a package without having to
 release new versions of every dependent package). If dependencies are
@@ -35,10 +36,13 @@ As a solution to this problem, I propose a simple set of rules and
 requirements that dictate how version numbers are assigned and incremented.
 These rules are based on but not necessarily limited to pre-existing
 widespread common practices in use in both closed and open-source software.
-For this system to work, you first need to declare a public API. This may
-consist of documentation or be enforced by the code itself. Regardless, it is
-important that this API be clear and precise. Once you identify your public
-API, you communicate changes to it with specific increments to your version
+
+This system works by versioning an interface, for instance: a public API, a
+database schema, a protocol or a file format. Anything that is served by
+having a formalized interface that may evolve over time could be versioned.
+The interface may be formalized by documentation or be enforced by the code
+itself, as long as the formalization is clear and precise. Once the interface
+is formalized, changes to it are communicated with specific increments to the version
 number. Consider a version format of X.Y.Z (Major.Minor.Patch). Bug fixes not
 affecting the API increment the patch version, backwards compatible API
 additions/changes increment the minor version, and backwards incompatible API
@@ -56,24 +60,25 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
 interpreted as described in [RFC 2119](http://tools.ietf.org/html/rfc2119).
 
-1. Software using Semantic Versioning MUST declare a public API. This API
-could be declared in the code itself or exist strictly in documentation.
-However it is done, it should be precise and comprehensive.
+1. The formalization of an interface that uses Semantic Versioning to communicate
+changes SHOULD be precise and comprehensive. It MAY be declared in the code
+itself or exist strictly in documentation.
 
 1. A normal version number MUST take the form X.Y.Z where X, Y, and Z are
 non-negative integers, and MUST NOT contain leading zeroes. X is the
 major version, Y is the minor version, and Z is the patch version.
 Each element MUST increase numerically. For instance: 1.9.0 -> 1.10.0 -> 1.11.0.
 
-1. Once a versioned package has been released, the contents of that version
+1. Once a version of the interface is released, that version of the interface
 MUST NOT be modified. Any modifications MUST be released as a new version.
 
-1. Major version zero (0.y.z) is for initial development. Anything may change
-at any time. The public API should not be considered stable.
+1. Major version zero (0.y.z) is for initial development. Anything MAY change
+at any time. The interface SHOULD NOT be considered stable.
 
-1. Version 1.0.0 defines the public API. The way in which the version number
-is incremented after this release is dependent on this public API and how it
-changes.
+1. Version 1.0.0 MUST define the first stable version of the interface. 
+All released versions of this interface with a version number larger then
+1.0.0 MUST communicate changes by incrementing its version number according
+to this specification.
 
 1. Patch version Z (x.y.Z | x > 0) MUST be incremented if only backwards
 compatible bug fixes are introduced. A bug fix is defined as an internal
@@ -81,13 +86,14 @@ change that fixes incorrect behavior.
 
 1. Minor version Y (x.Y.z | x > 0) MUST be incremented if new, backwards
 compatible functionality is introduced to the public API. It MUST be
-incremented if any public API functionality is marked as deprecated. It MAY be
+incremented if any functionality of the interface is marked as deprecated. It MAY be
 incremented if substantial new functionality or improvements are introduced
-within the private code. It MAY include patch level changes. Patch version
+without changing the interface (e.g. private code).
+It MAY include patch level changes. Patch version
 MUST be reset to 0 when minor version is incremented.
 
 1. Major version X (X.y.z | X > 0) MUST be incremented if any backwards
-incompatible changes are introduced to the public API. It MAY also include minor
+incompatible changes are introduced to the interface. It MAY also include minor
 and patch level changes. Patch and minor version MUST be reset to 0 when major
 version is incremented.
 
@@ -112,7 +118,7 @@ have the same precedence. Examples: 1.0.0-alpha+001, 1.0.0+20130313144700,
 
 1. Precedence refers to how versions are compared to each other when ordered.
 Precedence MUST be calculated by separating the version into major, minor, patch
-and pre-release identifiers in that order (Build metadata does not figure
+and pre-release identifiers in that order (build metadata does not figure
 into precedence). Precedence is determined by the first difference when
 comparing each of these identifiers from left to right as follows: Major, minor,
 and patch versions are always compared numerically. Example: 1.0.0 < 2.0.0 <
@@ -310,6 +316,7 @@ that users can smoothly transition to the new API.
 No, but use good judgment. A 255 character version string is probably overkill,
 for example. Also, specific systems may impose their own limits on the size of
 the string.
+
 
 About
 -----
